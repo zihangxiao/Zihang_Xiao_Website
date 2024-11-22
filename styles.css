@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+.navbar {
+    background-color: #fff;
+    padding: 20px;
+    border-bottom: 1px solid #eaeaea;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    font-weight: 500;
+    font-size: 1.5em;
+    text-decoration: none;
+    color: #000;
+}
+
+.navbar .nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 300;
+    color: #666;
+    transition: color 0.3s;
+}
+
+.navbar .nav-links a:hover {
+    color: #000;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.content {
+    text-align: center;
+    margin: 100px 0;
+}
+
+#home h1 {
+    font-size: 2.5em;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+
+#about img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.resume-link {
+    text-decoration: none;
+    font-weight: 500;
+    color: #fff;
+    background-color: #000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.resume-link:hover {
+    background-color: #444;
+}
+
+footer {
+    background-color: #fff;
+    padding: 20px 0;
+    border-top: 1px solid #eaeaea;
+    text-align: center;
+}
+footer p {
+    margin: 0;
+    color: #999;
+    font-weight: 300;
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Zihang Xiao</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        #gallery img {
+            height: 300px; /* Fix the height */
+            width: 100%; /* Allow width to adjust based on the container */
+            object-fit: cover; /* Crop the image to fit the fixed height */
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        #gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="home.html" class="logo">Zihang Xiao</a>
+            <div class="nav-links">
+                <a href="home.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="resume.html">Resume</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="about" class="container">
+        <div class="content">
+            <h2>About Me</h2>
+            <p>I'm a 4th Year Systems Neuroscience Major @ UCSB CCS and I study Fruit Fly.</p>
+            <p>In my free time, I watch cat videos and play video games</p>
+            <p>I also play Guitar and boulder</p>
+            <p>I observe animals including Squirrels, Cats, and Rabbits from YouTube and real life.</p>
+            <div id="gallery">
+                <img src="me.JPEG" alt="Picture of Zihang Xiao">
+                <img src="squirrel_1.JPEG" alt="Squirrel Image 1">
+                <img src="me_squirrel.JPEG" alt="Me and a Squirrel">
+                <img src="cat_1.JPG" alt="cat 1">
+            </div>
+        </div>
+    </section>
+</body>
+</html>

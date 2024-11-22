@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Zihang Xiao</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        .content img {
+            max-width: 50%;
+            height: auto;
+            margin-top: 5px;
+            transition: transform 0.3s ease; /* Smooth enlarge effect */
+            cursor: pointer; /* Show pointer on hover */
+        }
+
+        .content img:hover {
+            transform: scale(1.5); /* Enlarge the image on hover */
+        }
+
+        .credit {
+            font-size: 0.6rem; /* Makes text smaller */
+            font-style: italic; /* Makes text italic */
+            margin-top: 10px;
+            color: #555; /* Optional: Makes text a subtle gray */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="home.html" class="logo">Zihang Xiao</a>
+            <div class="nav-links">
+                <a href="home.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="resume.html">Resume</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="container">
+        <div class="content">
+            <h1>Welcome!</h1>
+            <p>Here is a fly brain and I study it!</p>
+            <!-- Link wrapping the image -->
+            <a href="https://www.nature.com/collections/hgcfafejia" target="_blank" title="Visit Nature.com">
+                <img src="fly_brain.png" alt="Fly Brain Image">
+            </a>
+            <p class="credit">Credit: Tyler Sloan and Amy Sterling for FlyWire</p>
+        </div>
+    </section>
+</body>
+</html>
+
+
+
+
+
+
+
