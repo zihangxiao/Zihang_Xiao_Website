@@ -8,26 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
-    <style>
-        .content img {
-            max-width: 50%;
-            height: auto;
-            margin-top: 5px;
-            transition: transform 0.3s ease; /* Smooth enlarge effect */
-            cursor: pointer; /* Show pointer on hover */
-        }
-
-        .content img:hover {
-            transform: scale(1.5); /* Enlarge the image on hover */
-        }
-
-        .credit {
-            font-size: 0.6rem; /* Makes text smaller */
-            font-style: italic; /* Makes text italic */
-            margin-top: 10px;
-            color: #555; /* Optional: Makes text a subtle gray */
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -35,22 +15,467 @@
             <a href="index.html" class="logo">Zihang Xiao</a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="resume.html">Resume</a>
+                <a href="#about">About + Resume</a>
             </div>
         </div>
     </nav>
 
     <section id="home" class="container">
         <div class="content">
-            <h1>Welcome!</h1>
-            <p>Here is a fly brain. I research it!</p>
-            <!-- Link wrapping the image -->
-            <a href="https://www.nature.com/collections/hgcfafejia" target="_blank" title="Visit Nature.com">
-                <img src="fly_brain.png" alt="Fly Brain Image">
-            </a>
-            <p class="credit">Credit: Tyler Sloan and Amy Sterling for FlyWire</p>
+            <div class="ascii-brain-wrap">
+                <div class="ascii-stage">
+                    <pre id="ascii-brain" class="ascii-output" aria-label="ASCII fly brain rendering">                               +===============     ===============+
+                           +============================================
+                          +==============================================
+                        ==================================================
+                        ===================================================
+                        ====================================================
+            =========== =============================================================+
+            ===========    =============================================  ==============
+         ================================================================+===============+
+        ===================================================================================
+      =+====================================================================================
+     ========================================================================================
+     ==========================================================================================
+     ==========================================================================================
+     ==========================================================================================
+     ==========================================================================================
+     ==========================================================================================
+     ==========================================================================================
+     =========================================================================================+
+     ===========================+  +===========================+ ===========================
+      +=========================    +==========================    =========================
+        ======================       ========================       =======================
+         ====================         ======================+       ======================
+            =================           ===================+          +================+
+              =+===========                                            ===========+++
+                  =======                                                 +======</pre>
+                    <pre id="ascii-activity" class="ascii-activity" aria-hidden="true"></pre>
+                </div>
+            </div>
         </div>
     </section>
+
+    <section id="about" class="container">
+        <div class="content">
+            <h2>About Me</h2>
+            <p>I'm a First Year PhD Student in the Harvard Program in Neuroscience.</p>
+            <p>In my free time, I watch random videos and play video games.</p>
+            <p>I also play guitar and listen to jazz.</p>
+
+            <h2 class="section-break">Resume</h2>
+            <p>This section contains my current CV and past lab experience.</p>
+            <p>Labs I have worked with:</p>
+            <div class="ascii-lab-list">
+                <a class="ascii-lab-link" href="https://www.bbe.caltech.edu/people/elizabeth-j-hong" target="_blank" rel="noopener noreferrer" aria-label="Dr. Elizabeth J. Hong Lab (Caltech)">
+<pre>   ____      _ _            _
+ / ___|__ _| | |_ ___  ___| |__
+| |   / _` | | __/ _ \/ __| '_ \
+| |__| (_| | | ||  __/ (__| | | |
+ \____\__,_|_|\__\___|\___|_| |_|</pre>
+                </a>
+                <a class="ascii-lab-link" href="https://sungsoo-kim.mcdb.ucsb.edu/" target="_blank" rel="noopener noreferrer" aria-label="Dr. Sung Soo Kim Lab (UCSB)">
+<pre>  _   _  ____ ____  ____
+ | | | |/ ___/ ___|| __ )
+ | | | | |   \___ \|  _ \
+ | |_| | |___ ___) | |_) |
+  \___/ \____|____/|____/</pre>
+                </a>
+            </div>
+            <p>
+                <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-link"><strong>View My Resume (PDF)</strong></a>
+            </p>
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            // Older links used #home, which nudges the page downward on load.
+            if (window.location.hash === "#home") {
+                if (window.history && typeof window.history.replaceState === "function") {
+                    window.history.replaceState(null, "", window.location.pathname + window.location.search);
+                }
+                window.scrollTo(0, 0);
+            }
+
+            const asciiEl = document.getElementById("ascii-brain");
+            const activityEl = document.getElementById("ascii-activity");
+            const stage = document.querySelector(".ascii-stage");
+            if (!asciiEl || !activityEl || !stage) {
+                return;
+            }
+
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (reducedMotion) {
+                return;
+            }
+
+            const baseText = asciiEl.textContent.replace(/\r/g, "");
+            const rawLines = baseText.split("\n");
+            while (rawLines.length && rawLines[0].trim() === "") {
+                rawLines.shift();
+            }
+            while (rawLines.length && rawLines[rawLines.length - 1].trim() === "") {
+                rawLines.pop();
+            }
+
+            let minLead = Infinity;
+            for (let i = 0; i < rawLines.length; i += 1) {
+                if (rawLines[i].trim() === "") {
+                    continue;
+                }
+                const m = rawLines[i].match(/^\s*/);
+                const lead = m ? m[0].length : 0;
+                minLead = Math.min(minLead, lead);
+            }
+
+            const baseLines = rawLines.map(function (line) {
+                return line.slice(Number.isFinite(minLead) ? minLead : 0);
+            });
+            asciiEl.textContent = baseLines.join("\n");
+
+            const height = baseLines.length;
+            const width = baseLines.reduce(function (m, line) { return Math.max(m, line.length); }, 0);
+            const baseGrid = baseLines.map(function (line) {
+                return line.padEnd(width, " ").split("");
+            });
+
+            const activeMask = [];
+            const activeCells = [];
+            for (let y = 0; y < height; y += 1) {
+                activeMask[y] = [];
+                for (let x = 0; x < width; x += 1) {
+                    activeMask[y][x] = baseGrid[y][x] !== " ";
+                    if (activeMask[y][x]) {
+                        activeCells.push({ x: x, y: y });
+                    }
+                }
+            }
+
+            function isActiveCell(x, y) {
+                return y >= 0 && y < height && x >= 0 && x < width && !!activeMask[y][x];
+            }
+
+            function clamp(value, min, max) {
+                return Math.max(min, Math.min(max, value));
+            }
+
+            function nearestActiveCell(x, y, maxRadius) {
+                const cx = clamp(Math.round(x), 0, width - 1);
+                const cy = clamp(Math.round(y), 0, height - 1);
+                if (isActiveCell(cx, cy)) {
+                    return { x: cx, y: cy };
+                }
+
+                const limit = typeof maxRadius === "number" ? maxRadius : 12;
+                for (let r = 1; r <= limit; r += 1) {
+                    for (let oy = -r; oy <= r; oy += 1) {
+                        for (let ox = -r; ox <= r; ox += 1) {
+                            if (Math.abs(ox) !== r && Math.abs(oy) !== r) {
+                                continue;
+                            }
+                            const nx = cx + ox;
+                            const ny = cy + oy;
+                            if (isActiveCell(nx, ny)) {
+                                return { x: nx, y: ny };
+                            }
+                        }
+                    }
+                }
+                return null;
+            }
+
+            const life = [];
+            const nextLife = [];
+            const cursorFlash = [];
+
+            for (let y = 0; y < height; y += 1) {
+                life[y] = [];
+                nextLife[y] = [];
+                cursorFlash[y] = [];
+                for (let x = 0; x < width; x += 1) {
+                    if (activeMask[y][x]) {
+                        life[y][x] = Math.random() < 0.24;
+                    } else {
+                        life[y][x] = false;
+                    }
+                    nextLife[y][x] = false;
+                    cursorFlash[y][x] = 0;
+                }
+            }
+
+            const pointer = {
+                active: false,
+                x: Math.floor(width / 2),
+                y: Math.floor(height / 2),
+                brushRadius: 2
+            };
+
+            let stagnantSteps = 0;
+            const recentHashes = [];
+
+            function injectRipple(options) {
+                if (!activeCells.length) {
+                    return;
+                }
+
+                const center = activeCells[Math.floor(Math.random() * activeCells.length)];
+                const rings = options && options.rings ? options.rings : 2;
+                const baseRadius = options && options.baseRadius ? options.baseRadius : 2.2;
+                const ringGap = options && options.ringGap ? options.ringGap : 1.6;
+                const thickness = options && options.thickness ? options.thickness : 0.8;
+                const minCount = options && options.minCount ? options.minCount : 10;
+                const centerFill = options && options.centerFill ? options.centerFill : 4;
+
+                let injected = 0;
+
+                for (let r = 0; r < rings; r += 1) {
+                    const radius = baseRadius + r * ringGap + Math.random() * 0.35;
+                    const pointCount = Math.max(12, Math.floor(18 + radius * 10));
+                    for (let p = 0; p < pointCount; p += 1) {
+                        const a = (Math.PI * 2 * p) / pointCount;
+                        const jitter = (Math.random() - 0.5) * thickness;
+                        const nx = Math.round(center.x + Math.cos(a) * (radius + jitter) * 1.8);
+                        const ny = Math.round(center.y + Math.sin(a) * (radius + jitter));
+                        const anchor = nearestActiveCell(nx, ny, 3);
+                        if (!anchor) {
+                            continue;
+                        }
+                        if (!life[anchor.y][anchor.x]) {
+                            life[anchor.y][anchor.x] = true;
+                            cursorFlash[anchor.y][anchor.x] = 2;
+                            injected += 1;
+                        }
+                    }
+                }
+
+                for (let i = 0; i < centerFill; i += 1) {
+                    const ox = Math.floor(Math.random() * 5) - 2;
+                    const oy = Math.floor(Math.random() * 5) - 2;
+                    const anchor = nearestActiveCell(center.x + ox, center.y + oy, 3);
+                    if (anchor && !life[anchor.y][anchor.x]) {
+                        life[anchor.y][anchor.x] = true;
+                        cursorFlash[anchor.y][anchor.x] = 2;
+                        injected += 1;
+                    }
+                }
+
+                // Guarantee a minimum kick while staying clustered near the ripple source.
+                let tries = 0;
+                while (injected < minCount && tries < minCount * 20) {
+                    const a = Math.random() * Math.PI * 2;
+                    const d = Math.random() * (baseRadius + rings * ringGap) * 2.2;
+                    const nx = Math.round(center.x + Math.cos(a) * d);
+                    const ny = Math.round(center.y + Math.sin(a) * d * 0.6);
+                    const anchor = nearestActiveCell(nx, ny, 4);
+                    if (anchor && !life[anchor.y][anchor.x]) {
+                        life[anchor.y][anchor.x] = true;
+                        cursorFlash[anchor.y][anchor.x] = 2;
+                        injected += 1;
+                    }
+                    tries += 1;
+                }
+            }
+
+            function addAt(x, y, radius) {
+                for (let oy = -radius; oy <= radius; oy += 1) {
+                    for (let ox = -radius; ox <= radius; ox += 1) {
+                        const nx = x + ox;
+                        const ny = y + oy;
+                        if (!isActiveCell(nx, ny)) {
+                            continue;
+                        }
+                        if ((ox * ox + oy * oy) > (radius * radius + 0.5)) {
+                            continue;
+                        }
+                        life[ny][nx] = true;
+                        cursorFlash[ny][nx] = 2;
+                    }
+                }
+            }
+
+            function updatePointerFromClient(clientX, clientY) {
+                const rect = stage.getBoundingClientRect();
+                if (!rect.width || !rect.height) {
+                    return;
+                }
+
+                const normX = clamp((clientX - rect.left) / rect.width, 0, 0.9999);
+                const normY = clamp((clientY - rect.top) / rect.height, 0, 0.9999);
+                const rawX = Math.floor(normX * width);
+                const rawY = Math.floor(normY * height);
+                const anchor = nearestActiveCell(rawX, rawY, 14);
+                if (!anchor) {
+                    return;
+                }
+
+                pointer.x = anchor.x;
+                pointer.y = anchor.y;
+                pointer.active = true;
+                addAt(pointer.x, pointer.y, pointer.brushRadius);
+            }
+
+            stage.addEventListener("pointermove", function (event) {
+                updatePointerFromClient(event.clientX, event.clientY);
+            });
+
+            stage.addEventListener("mousemove", function (event) {
+                updatePointerFromClient(event.clientX, event.clientY);
+            });
+
+            stage.addEventListener("touchmove", function (event) {
+                if (!event.touches || !event.touches.length) {
+                    return;
+                }
+                updatePointerFromClient(event.touches[0].clientX, event.touches[0].clientY);
+            }, { passive: true });
+
+            stage.addEventListener("mouseleave", function () {
+                pointer.active = false;
+            });
+
+            stage.addEventListener("touchend", function () {
+                pointer.active = false;
+            });
+
+            function countNeighbors(x, y) {
+                let count = 0;
+                for (let oy = -1; oy <= 1; oy += 1) {
+                    for (let ox = -1; ox <= 1; ox += 1) {
+                        if (ox === 0 && oy === 0) {
+                            continue;
+                        }
+                        const nx = x + ox;
+                        const ny = y + oy;
+                        if (nx < 0 || nx >= width || ny < 0 || ny >= height) {
+                            continue;
+                        }
+                        if (life[ny][nx]) {
+                            count += 1;
+                        }
+                    }
+                }
+                return count;
+            }
+
+            function stepLife() {
+                let aliveCount = 0;
+                let changedCount = 0;
+                let hash = 2166136261;
+                for (let y = 0; y < height; y += 1) {
+                    for (let x = 0; x < width; x += 1) {
+                        if (!activeMask[y][x]) {
+                            nextLife[y][x] = false;
+                            continue;
+                        }
+
+                        const neighbors = countNeighbors(x, y);
+                        const alive = life[y][x];
+                        const survives = alive && (neighbors === 2 || neighbors === 3);
+                        const born = !alive && neighbors === 3;
+                        const next = survives || born;
+                        nextLife[y][x] = next;
+                        if (next !== alive) {
+                            changedCount += 1;
+                        }
+                        if (next) {
+                            aliveCount += 1;
+                        }
+
+                        // Lightweight state hash for loop/fixed-point detection.
+                        hash ^= next ? 1 : 0;
+                        hash = Math.imul(hash, 16777619);
+                    }
+                }
+
+                for (let y = 0; y < height; y += 1) {
+                    for (let x = 0; x < width; x += 1) {
+                        life[y][x] = nextLife[y][x];
+                    }
+                }
+
+                const looped = recentHashes.indexOf(hash) !== -1;
+                recentHashes.push(hash);
+                if (recentHashes.length > 8) {
+                    recentHashes.shift();
+                }
+
+                if (changedCount <= 2 || looped) {
+                    stagnantSteps += 1;
+                } else {
+                    stagnantSteps = 0;
+                }
+
+                if (aliveCount < 36) {
+                    injectRipple({ rings: 2, baseRadius: 2.1, ringGap: 1.5, minCount: 14, centerFill: 5 });
+                }
+
+                // Periodic spontaneous ripple births to avoid tiny global speckles.
+                if (Math.random() < 0.1) {
+                    injectRipple({ rings: 1, baseRadius: 1.8, ringGap: 1.3, minCount: 7, centerFill: 2 });
+                }
+
+                // Strong clustered wave when stuck in fixed points or short loops.
+                if (stagnantSteps >= 6) {
+                    injectRipple({ rings: 3, baseRadius: 5.5, ringGap: 1.7, minCount: 24, centerFill: 7 });
+                    stagnantSteps = 0;
+                }
+
+                if (pointer.active) {
+                    addAt(pointer.x, pointer.y, pointer.brushRadius);
+                }
+            }
+
+            function render() {
+                const grid = baseGrid.map(function (row) {
+                    return row.map(function () { return " "; });
+                });
+
+                for (let y = 0; y < height; y += 1) {
+                    for (let x = 0; x < width; x += 1) {
+                        if (!activeMask[y][x]) {
+                            continue;
+                        }
+                        if (life[y][x]) {
+                            grid[y][x] = "^";
+                        }
+                        if (cursorFlash[y][x] > 0) {
+                            grid[y][x] = "+";
+                            cursorFlash[y][x] -= 1;
+                        }
+                    }
+                }
+
+                activityEl.textContent = grid.map(function (row) { return row.join(""); }).join("\n");
+            }
+
+            let accumulator = 0;
+            let lastTime = 0;
+            const stepMs = 45;
+
+            function frame(time) {
+                if (!lastTime) {
+                    lastTime = time;
+                }
+                const dt = Math.min(50, time - lastTime);
+                lastTime = time;
+                accumulator += dt;
+
+                while (accumulator >= stepMs) {
+                    stepLife();
+                    accumulator -= stepMs;
+                }
+
+                render();
+                requestAnimationFrame(frame);
+            }
+
+            activityEl.textContent = baseGrid.map(function (row) {
+                return row.map(function () { return " "; }).join("");
+            }).join("\n");
+
+            requestAnimationFrame(frame);
+        })();
+    </script>
 </body>
 </html>
