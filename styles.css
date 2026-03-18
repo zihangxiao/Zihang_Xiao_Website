@@ -6,10 +6,16 @@
     --muted: #b8b8b8;
     --soft: #8f8f8f;
     --nav-offset: 72px;
+    --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-page-enter: 820ms;
 }
 
 * {
     box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -19,6 +25,10 @@ body {
     color: var(--text);
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     overflow-x: hidden;
+}
+
+body.page-enter {
+    animation: pageFadeIn var(--dur-page-enter) var(--ease-smooth);
 }
 
 .container {
@@ -47,6 +57,29 @@ body {
     font-size: 1.12rem;
     font-weight: 600;
     letter-spacing: 0.02em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.05;
+}
+
+.navbar .logo::after {
+    content: attr(data-ascii);
+    display: block;
+    margin-top: 3px;
+    text-align: center;
+    color: rgba(220, 220, 220, 0.78);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    line-height: 1.15;
+    min-height: 1.15em;
+    white-space: nowrap;
+    overflow: visible;
+    width: auto;
+    border-right: 1px solid rgba(235, 235, 235, 0.72);
+    animation: asciiCursorBlink 860ms steps(1, end) infinite;
 }
 
 .navbar .nav-links {
@@ -60,6 +93,32 @@ body {
     border: 1px solid transparent;
     padding: 5px 10px;
     transition: color 140ms ease, border-color 140ms ease, background-color 140ms ease;
+}
+
+.ascii-nav-title {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.ascii-nav-title::after {
+    content: attr(data-ascii);
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.54rem;
+    letter-spacing: 0.12em;
+    color: rgba(210, 210, 210, 0.62);
+    line-height: 1;
+    white-space: nowrap;
+    overflow: visible;
+    width: auto;
+    border-right: 0;
+    animation: none;
 }
 
 .navbar .nav-links a:hover,
@@ -91,8 +150,45 @@ h2 {
     font-size: clamp(1.2rem, 2.2vw, 1.7rem);
 }
 
+.ascii-heading {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.ascii-heading::after {
+    content: attr(data-ascii);
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: clamp(0.52rem, 0.9vw, 0.72rem);
+    letter-spacing: 0.16em;
+    color: rgba(220, 220, 220, 0.64);
+    line-height: 1;
+    white-space: nowrap;
+    overflow: visible;
+    width: auto;
+    border-right: 0;
+    animation: none;
+}
+
+.ascii-nav-title:hover::after,
+.ascii-nav-title:focus-visible::after,
+.ascii-heading:hover::after,
+.ascii-heading:focus-visible::after,
+.navbar .logo:hover::after {
+    color: rgba(238, 238, 238, 0.92);
+}
+
 .section-break {
     margin-top: 34px;
+}
+
+.resume-stack {
+    transform: translateY(-10px);
 }
 
 p {
@@ -157,8 +253,57 @@ p {
 
 #about,
 #resume {
-    padding-top: 22px;
-    padding-bottom: 34px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.about-section {
+    position: relative;
+    min-height: calc(100vh - var(--nav-offset));
+    padding-top: 14px;
+    padding-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    scroll-margin-top: var(--nav-offset);
+}
+
+.about-content {
+    position: relative;
+    z-index: 3;
+    width: min(940px, 96%);
+    margin: 0;
+    transform: translateY(2px);
+    will-change: transform, opacity;
+}
+
+.about-content.reveal-ready {
+    opacity: 0;
+    transform: translateY(24px);
+}
+
+.about-content.reveal-ready.is-visible {
+    opacity: 1;
+    transform: translateY(2px);
+    transition: opacity 620ms var(--ease-smooth), transform 620ms var(--ease-smooth);
+}
+
+.about-brain-bg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1.16);
+    transform-origin: center center;
+    margin: 0;
+    white-space: pre;
+    pointer-events: none;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 9px;
+    line-height: 0.95;
+    letter-spacing: 0;
+    color: rgba(210, 210, 210, 0.17);
+    z-index: 1;
 }
 
 .ascii-lab-list {
@@ -273,6 +418,46 @@ footer {
     color: var(--soft);
 }
 
+@keyframes asciiCursorBlink {
+    0%,
+    49% {
+        border-right-color: rgba(236, 236, 236, 0.82);
+    }
+    50%,
+    100% {
+        border-right-color: rgba(236, 236, 236, 0.08);
+    }
+}
+
+@keyframes pageFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(7px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    body.page-enter {
+        animation: none;
+    }
+
+    .about-content,
+    .about-content.reveal-ready,
+    .about-content.reveal-ready.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+        transition: none;
+    }
+}
+
 @media (max-width: 768px) {
     .navbar .container {
         flex-direction: column;
@@ -296,6 +481,22 @@ footer {
 
     #home .content {
         transform: translateY(-57px);
+    }
+
+    .about-section {
+        min-height: auto;
+        padding-top: 28px;
+        padding-bottom: 28px;
+    }
+
+    .about-brain-bg {
+        display: none;
+    }
+
+    .navbar .logo::after,
+    .ascii-nav-title::after,
+    .ascii-heading::after {
+        display: none;
     }
 
     .ascii-lab-link {

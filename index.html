@@ -9,13 +9,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="page-enter">
     <nav class="navbar">
         <div class="container">
-            <a href="index.html" class="logo">Zihang Xiao</a>
+            <a href="index.html" class="logo" data-ascii="[ z i h a n g ]">Zihang Xiao</a>
             <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="#about">About + Resume</a>
+                <a href="index.html" class="ascii-nav-title" data-ascii="[ h o m e ]">Home</a>
+                <a href="#about" class="ascii-nav-title" data-ascii="[ a b o u t _ r e s u m e ]">About + Resume</a>
             </div>
         </div>
     </nav>
@@ -56,35 +56,86 @@
         </div>
     </section>
 
-    <section id="about" class="container">
-        <div class="content">
-            <h2>About Me</h2>
+    <section id="about" class="container about-section">
+        <pre class="about-brain-bg" aria-hidden="true">                                                                       u8EAAAAAAAAAAAAAAAASp
+                                                      up8OAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgz
+                                                 lOAAAAAAAAAAAAAAAAAAAAObu               zlXAAAAAAAAb
+                                              XAAAAAAAA8z                                      zJAAAAAAEXl
+                                           lAAAAAAbz                              bu               bAAAAAAAAAAAJbz
+                                         uAAAAAl                          8AAAX XAASz                 zuulXAAAAAAAAA8
+                                       pSAAAAp              8AAu             3AAAO             p               uOAAAAAAl
+                                   uOAAAAAAX       ullg8OAAAAXz               AA8             XAAO                 gAAAAA8
+                                 SAAAAAAg          XAAAAJb                   3AA                SAEzubX3buz           JAAAAz
+                               SAAAAJu                                       JAX                gAAAAEOOEAAAAg         uAAAA8
+                             pAAAA3                                          OAS              uAAEu        uOAAl         SAAAX
+                            8AAAAz                                           bAAz            zAAl            uSz          XAAAl
+                           gAAAO   zbb                   lSEAAAESl          bEAA8          gEAAJ                          zAAAAz
+                           AAAA    zAA8             zzbAAAAbz z8Ag       zAAAOz         uAAAEz                             8AAAAu
+                          pAAAg     zAAX       zXAAAAAAO                3AAg           JAAl                                 bAAAAAz
+                          3AAAp       SAAAg   AAAb                     XAAz          zAAX                                     uAAAAb
+                          8AAAp         pOAAAAAX                       AAz           3AJ                     zupu               OAAA8
+                          uAAAg              OA3             uXp     gAAAz           EAg                 pEAAAAA3                JAAAz
+                           AAAE              pAAu            uAAAAlzAAAz                               lAAAAAAO8p                uAAAA
+                           3AAAb              XAAz              gOAAA8                  ubSAAAAAAAAASbEAAAEu                      OAAAu
+                            AAAO               8AAl               bAE               zOAAAAAAAAAAAAAAAAAAAp                        bAAAl
+                            EAAA      uAAp      uAAAp             gAE ulg83X38glpu3AAAAAASu         u3EJu             uu          bAAAl
+                            bAAAb      JAJ        uEAAOu         uOAAAAAAAAAAAAAAAAAAJu                              lAAz         SAAAp
+                             AAAAz      OAAb         lAAAAJpz  3AAAAAAA3p     pbSAA8                                zAAb         zAAAA
+                             zAAAAu      zXAAA           bOAAAAAAAOu                                               gAAb          lAAAb
+                              zAAAAb                        OAAAO                                                bAAAz           EAAAz
+                                JAAAAg                     8AAA8                                           up8EAAASz             zAAAAz
+                                 uAAAAAEg                 pAAAE                                         lAAAAA3p                  8AAAl
+                                    OAAAAAAAAO8puzzzzpg3JAAAAAu           3AASzz    zz8AAAAAJz       pAAAAzbAAAAg                  AAA8
+                                       gOAAAAAAAAAAAAAAAAAAAAA             uAAAAAAAAAAE3p  gJAAAAAAAAAOl      zSAAX               zAAA8
+                                            zzupgbbbgpuuzz3AAAu           zAA3                  zz               SAAu             SAAAl
+                                                          pAAAE           ubb                                     pAAb           bAAAO
+                                                           gAAAJ                                                   zz          zEAAAO
+                                                            bAAAAp                                                           pAAAAAg
+                                                             uAAAAA3z                       g8p                           gEAAAAAAJ
+                                                               zAAAAAAAb               pOAAAAAAAAAAE8u               bEAAAAAAAOAAAX
+                                                                  lEAAAAAAAAAAAAAAAAAAAAAAAAE3JAAAAAAAAAAAAAAAAAAAAAAAAAAAEg zAAAAz
+                                                                      p8EAAAAAAAAAAAAAE3lu        zpg8SEAAAAAAAAAAAJXbpz    zAAAAl
+                                                                                 gAAAAAAA8u                               zOAAAAu
+                                                                                    lJAAAAAAAAAAJOSX8z                  bAAAAA3
+                                                                                        zgEAAAAAAAAAAO            lXAAAAAAAAg
+                                                                                                  SAAAz     8AAAAAAAAAAAJg
+                                                                                                  lAAAJ     lAAAA8gpu
+                                                                                                   8AAA8     XAAAb
+                                                                                                    OAAAX     JAAA8
+                                                                                                     8g        3g</pre>
+
+        <div class="content about-content">
+            <h2 class="ascii-heading" data-ascii="[ a b o u t ]">About Me</h2>
             <p>I'm a First Year PhD Student in the Harvard Program in Neuroscience.</p>
             <p>In my free time, I watch random videos and play video games.</p>
             <p>I also play guitar and listen to jazz.</p>
+            <p>I observe animals from both YouTube and real life.</p>
 
-            <h2 class="section-break">Resume</h2>
-            <p>This section contains my current CV and past lab experience.</p>
-            <p>Labs I have worked with:</p>
-            <div class="ascii-lab-list">
-                <a class="ascii-lab-link" href="https://www.bbe.caltech.edu/people/elizabeth-j-hong" target="_blank" rel="noopener noreferrer" aria-label="Dr. Elizabeth J. Hong Lab (Caltech)">
+            <div class="resume-stack">
+                <h2 class="section-break ascii-heading" data-ascii="[ r e s u m e ]">Resume</h2>
+                <p>This section contains my current CV and past lab experience.</p>
+                <p>Labs I have worked with:</p>
+
+                <div class="ascii-lab-list">
+                    <a class="ascii-lab-link" href="https://www.bbe.caltech.edu/people/elizabeth-j-hong" target="_blank" rel="noopener noreferrer" aria-label="Dr. Elizabeth J. Hong Lab (Caltech)">
 <pre>   ____      _ _            _
  / ___|__ _| | |_ ___  ___| |__
 | |   / _` | | __/ _ \/ __| '_ \
 | |__| (_| | | ||  __/ (__| | | |
  \____\__,_|_|\__\___|\___|_| |_|</pre>
-                </a>
-                <a class="ascii-lab-link" href="https://sungsoo-kim.mcdb.ucsb.edu/" target="_blank" rel="noopener noreferrer" aria-label="Dr. Sung Soo Kim Lab (UCSB)">
+                    </a>
+                    <a class="ascii-lab-link" href="https://sungsoo-kim.mcdb.ucsb.edu/" target="_blank" rel="noopener noreferrer" aria-label="Dr. Sung Soo Kim Lab (UCSB)">
 <pre>  _   _  ____ ____  ____
  | | | |/ ___/ ___|| __ )
  | | | | |   \___ \|  _ \
  | |_| | |___ ___) | |_) |
   \___/ \____|____/|____/</pre>
-                </a>
+                    </a>
+                </div>
+                <p>
+                    <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-link"><strong>View My Resume (PDF)</strong></a>
+                </p>
             </div>
-            <p>
-                <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-link"><strong>View My Resume (PDF)</strong></a>
-            </p>
         </div>
     </section>
 
@@ -98,6 +149,114 @@
                 window.scrollTo(0, 0);
             }
 
+            function normalizeAsciiPre(preEl) {
+                if (!preEl) {
+                    return;
+                }
+                const raw = preEl.textContent.replace(/\r/g, "");
+                const lines = raw.split("\n");
+                while (lines.length && lines[0].trim() === "") {
+                    lines.shift();
+                }
+                while (lines.length && lines[lines.length - 1].trim() === "") {
+                    lines.pop();
+                }
+                let minLead = Infinity;
+                for (let i = 0; i < lines.length; i += 1) {
+                    if (!lines[i].trim()) {
+                        continue;
+                    }
+                    const m = lines[i].match(/^\s*/);
+                    const lead = m ? m[0].length : 0;
+                    if (lead < minLead) {
+                        minLead = lead;
+                    }
+                }
+                if (!Number.isFinite(minLead)) {
+                    return;
+                }
+                preEl.textContent = lines.map(function (line) { return line.slice(minLead); }).join("\n");
+            }
+
+            function startLogoTyping(logoEl) {
+                if (!logoEl) {
+                    return;
+                }
+
+                const phrases = ["xiao zi hang", "肖梓杭"];
+
+                function formatAsciiLabel(text) {
+                    const normalized = text.trim().replace(/\s+/g, "_");
+                    return "[ " + normalized + " ]";
+                }
+
+                const rendered = phrases.map(formatAsciiLabel);
+                let phraseIndex = 0;
+                let charIndex = 0;
+                let deleting = false;
+                let hold = 0;
+
+                function tick() {
+                    if (hold > 0) {
+                        hold -= 1;
+                        window.setTimeout(tick, 120);
+                        return;
+                    }
+
+                    const current = rendered[phraseIndex];
+                    if (!deleting) {
+                        charIndex = Math.min(charIndex + 1, current.length);
+                        logoEl.setAttribute("data-ascii", current.slice(0, charIndex));
+                        if (charIndex >= current.length) {
+                            deleting = true;
+                            hold = phraseIndex === 0 ? 12 : 20;
+                        }
+                    } else {
+                        charIndex = Math.max(charIndex - 1, 0);
+                        logoEl.setAttribute("data-ascii", current.slice(0, charIndex));
+                        if (charIndex <= 0) {
+                            deleting = false;
+                            phraseIndex = (phraseIndex + 1) % rendered.length;
+                            hold = 3;
+                        }
+                    }
+
+                    const delay = deleting ? 60 : 155;
+                    window.setTimeout(tick, delay);
+                }
+
+                logoEl.setAttribute("data-ascii", "");
+                window.setTimeout(tick, 240);
+            }
+
+            const logoEl = document.querySelector(".navbar .logo");
+            startLogoTyping(logoEl);
+
+              const aboutBrainEl = document.querySelector(".about-brain-bg");
+              normalizeAsciiPre(aboutBrainEl);
+
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const aboutContentEl = document.querySelector(".about-content");
+            if (aboutContentEl) {
+                if (!reducedMotion && "IntersectionObserver" in window) {
+                    aboutContentEl.classList.add("reveal-ready");
+                    const revealAbout = new IntersectionObserver(function (entries, observer) {
+                        for (let i = 0; i < entries.length; i += 1) {
+                            if (entries[i].isIntersecting) {
+                                aboutContentEl.classList.add("is-visible");
+                                observer.unobserve(aboutContentEl);
+                                break;
+                            }
+                        }
+                    }, {
+                        threshold: 0.26
+                    });
+                    revealAbout.observe(aboutContentEl);
+                } else {
+                    aboutContentEl.classList.add("is-visible");
+                }
+            }
+
             const asciiEl = document.getElementById("ascii-brain");
             const activityEl = document.getElementById("ascii-activity");
             const stage = document.querySelector(".ascii-stage");
@@ -105,10 +264,63 @@
                 return;
             }
 
-            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             if (reducedMotion) {
                 return;
             }
+
+            function startAboutBrainMutation(preEl) {
+                if (!preEl) {
+                    return;
+                }
+
+                const base = preEl.textContent;
+                const stableChars = base.split("");
+                const mutableIndices = [];
+                const rowStartByIndex = [];
+                let currentRowStart = 0;
+                for (let i = 0; i < stableChars.length; i += 1) {
+                    const ch = stableChars[i];
+                    rowStartByIndex[i] = currentRowStart;
+                    if (ch === "\n") {
+                        currentRowStart = i + 1;
+                    }
+                    if (ch !== " " && ch !== "\n" && ch !== "\t") {
+                        mutableIndices.push(i);
+                    }
+                }
+                if (!mutableIndices.length) {
+                    return;
+                }
+
+                const glitchChars = ["+", "=", "~", "^", "*", ".", ":", "#", "%", "@", "A", "E", "8", "3", "u", "z", "X", "J", "S", "p", "O", "l"];
+                let phase = 0;
+                window.setInterval(function () {
+                    const frame = stableChars.slice();
+                    const pulse = 120 + Math.floor(Math.random() * 150);
+                    const sweepWidth = 90;
+                    const sweepSeed = (phase * 97) % mutableIndices.length;
+
+                    for (let s = 0; s < sweepWidth; s += 1) {
+                        const idx = mutableIndices[(sweepSeed + s) % mutableIndices.length];
+                        frame[idx] = glitchChars[(phase + s) % glitchChars.length];
+                    }
+
+                    for (let n = 0; n < pulse; n += 1) {
+                        const idx = mutableIndices[Math.floor(Math.random() * mutableIndices.length)];
+                        const rowStart = rowStartByIndex[idx];
+                        const rowOffset = idx - rowStart;
+                        const wave = Math.sin((rowOffset + phase * 2.7) * 0.13);
+                        if (wave > -0.55 || Math.random() < 0.22) {
+                            frame[idx] = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+                        }
+                    }
+
+                    phase += 1;
+                    preEl.textContent = frame.join("");
+                }, 90);
+            }
+
+            startAboutBrainMutation(aboutBrainEl);
 
             const baseText = asciiEl.textContent.replace(/\r/g, "");
             const rawLines = baseText.split("\n");
