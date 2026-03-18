@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body class="page-enter">
     <nav class="navbar">
@@ -53,6 +53,7 @@
                     <pre id="ascii-activity" class="ascii-activity" aria-hidden="true"></pre>
                 </div>
             </div>
+            <p id="hero-intro" class="hero-intro" aria-live="polite"></p>
         </div>
     </section>
 
@@ -232,10 +233,37 @@
             const logoEl = document.querySelector(".navbar .logo");
             startLogoTyping(logoEl);
 
+            function startHeroIntroTyping(el, reduced) {
+                if (!el) {
+                    return;
+                }
+
+                const text = "i am xiao zihang.";
+                if (reduced) {
+                    el.textContent = text;
+                    return;
+                }
+
+                let idx = 0;
+                function tick() {
+                    idx = Math.min(idx + 1, text.length);
+                    const done = idx >= text.length;
+                    el.textContent = text.slice(0, idx) + (done ? "" : " | ");
+                    if (!done) {
+                        window.setTimeout(tick, 120 + Math.floor(Math.random() * 70));
+                    }
+                }
+
+                el.textContent = "";
+                window.setTimeout(tick, 360);
+            }
+
               const aboutBrainEl = document.querySelector(".about-brain-bg");
               normalizeAsciiPre(aboutBrainEl);
 
             const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const heroIntroEl = document.getElementById("hero-intro");
+            startHeroIntroTyping(heroIntroEl, reducedMotion);
             const aboutContentEl = document.querySelector(".about-content");
             if (aboutContentEl) {
                 if (!reducedMotion && "IntersectionObserver" in window) {
@@ -489,7 +517,7 @@
                 }
             }
 
-            function addAt(x, y, radius) {
+            function addAt(x, y, radius, holdTicks, flashTicks) {
                 for (let oy = -radius; oy <= radius; oy += 1) {
                     for (let ox = -radius; ox <= radius; ox += 1) {
                         const nx = x + ox;
@@ -501,7 +529,8 @@
                             continue;
                         }
                         life[ny][nx] = true;
-                        cursorFlash[ny][nx] = 2;
+                        const flash = typeof flashTicks === "number" ? flashTicks : 2;
+                        cursorFlash[ny][nx] = Math.max(cursorFlash[ny][nx], flash);
                     }
                 }
             }
@@ -525,6 +554,198 @@
                 pointer.y = anchor.y;
                 pointer.active = true;
                 addAt(pointer.x, pointer.y, pointer.brushRadius);
+            }
+
+            const autoGreetings = ["HI", "NI HAO"];
+            let greetingIndex = 0;
+            const patternState = {
+                mask: null,
+                bounds: null,
+                charMap: null,
+                phase: "idle",
+                ticks: 24,
+                successFrames: 0,
+                targetTotal: 0
+            };
+
+            const GREETING_STENCILS = {
+                "NI HAO": [
+                    "ooooo      ooo ooooo      ooooo   ooooo       .o.         .oooooo.   ",
+                    "`888b.     `8' `888'      `888'   `888'      .888.       d8P'  `Y8b  ",
+                    " 8 `88b.    8   888        888     888      .8\"888.     888      888 ",
+                    " 8   `88b.  8   888        888ooooo888     .8' `888.    888      888 ",
+                    " 8     `88b.8   888        888     888    .88ooo8888.   888      888 ",
+                    " 8       `888   888        888     888   .8'     `888.  `88b    d88' ",
+                    "o8o        `8  o888o      o888o   o888o o88o     o8888o  `Y8bood8P'  ",
+                    "                                                                     ",
+                    "                                                                     "
+                ],
+                "HI": [
+                    " ooooo  ooooo 0oo8o0  ",
+                    "`888'   `888'  oooo  ",
+                    " 888     888   oooo  ",
+                    " 888ooooo888  `8888  ",
+                    " 888     888   8888  ",
+                    " 888     888   8888  ",
+                    "o888o   o888o o888o0 ",
+                    "                    ",
+                    "                    "
+                ]
+            };
+
+            function textPointsFromCanvas(text) {
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+                if (!ctx) {
+                    return { points: [], width: 0, height: 0 };
+                }
+
+                const fontSize = 64;
+                const fontFamily = "'Noto Sans SC', 'IBM Plex Mono', monospace";
+                ctx.font = "700 " + fontSize + "px " + fontFamily;
+                const metrics = ctx.measureText(text);
+                const pad = 12;
+                const w = Math.ceil(metrics.width) + pad * 2;
+                const h = Math.ceil(fontSize * 1.2) + pad * 2;
+                canvas.width = w;
+                canvas.height = h;
+
+                ctx.fillStyle = "#000";
+                ctx.fillRect(0, 0, w, h);
+                ctx.fillStyle = "#fff";
+                ctx.font = "700 " + fontSize + "px " + fontFamily;
+                ctx.textBaseline = "top";
+                ctx.fillText(text, pad, pad);
+
+                const data = ctx.getImageData(0, 0, w, h).data;
+                const points = [];
+                for (let y = 0; y < h; y += 2) {
+                    for (let x = 0; x < w; x += 2) {
+                        const i = (y * w + x) * 4;
+                        if (data[i] > 130) {
+                            points.push({ x: x, y: y });
+                        }
+                    }
+                }
+
+                return { points: points, width: w, height: h };
+            }
+
+            function seedGreetingAt(centerX, centerY, text) {
+                const targetSet = new Set();
+                const charMap = new Map();
+                let minX = width - 1;
+                let minY = height - 1;
+                let maxX = 0;
+                let maxY = 0;
+
+                const stencil = GREETING_STENCILS[text];
+                if (stencil && stencil.length) {
+                    const stencilW = stencil.reduce(function (m, row) { return Math.max(m, row.length); }, 0);
+                    const stencilH = stencil.length;
+                    const scale = Math.min((width * 0.72) / Math.max(1, stencilW), (height * 0.34) / Math.max(1, stencilH), 1.1);
+                    const ox = centerX - (stencilW * scale) / 2;
+                    const oy = centerY - (stencilH * scale) / 2;
+
+                    for (let sy = 0; sy < stencilH; sy += 1) {
+                        const row = stencil[sy];
+                        for (let sx = 0; sx < row.length; sx += 1) {
+                            const ch = row[sx];
+                            if (ch === " ") {
+                                continue;
+                            }
+                            const px = ox + sx * scale;
+                            const py = oy + sy * scale;
+                            const anchor = nearestActiveCell(px, py, 12);
+                            if (!anchor) {
+                                continue;
+                            }
+                            const key = anchor.y * width + anchor.x;
+                            targetSet.add(key);
+                            charMap.set(key, ch);
+                            minX = Math.min(minX, anchor.x);
+                            minY = Math.min(minY, anchor.y);
+                            maxX = Math.max(maxX, anchor.x);
+                            maxY = Math.max(maxY, anchor.y);
+                        }
+                    }
+                } else {
+                    const glyph = textPointsFromCanvas(text);
+                    if (!glyph.points.length || !glyph.width || !glyph.height) {
+                        return;
+                    }
+
+                    const scale = Math.min((width * 0.5) / glyph.width, (height * 0.22) / glyph.height, 0.82);
+                    const drawW = Math.max(1, Math.round(glyph.width * scale));
+                    const drawH = Math.max(1, Math.round(glyph.height * scale));
+                    const ox = centerX - drawW / 2;
+                    const oy = centerY - drawH / 2;
+
+                    for (let i = 0; i < glyph.points.length; i += 1) {
+                        const px = ox + glyph.points[i].x * scale;
+                        const py = oy + glyph.points[i].y * scale;
+                        const anchor = nearestActiveCell(px, py, 12);
+                        if (!anchor) {
+                            continue;
+                        }
+                        const key = anchor.y * width + anchor.x;
+                        targetSet.add(key);
+                        minX = Math.min(minX, anchor.x);
+                        minY = Math.min(minY, anchor.y);
+                        maxX = Math.max(maxX, anchor.x);
+                        maxY = Math.max(maxY, anchor.y);
+                    }
+                }
+
+                if (!targetSet.size) {
+                    return;
+                }
+
+                const pad = 4;
+                const bx0 = Math.max(0, minX - pad);
+                const by0 = Math.max(0, minY - pad);
+                const bx1 = Math.min(width - 1, maxX + pad);
+                const by1 = Math.min(height - 1, maxY + pad);
+
+                for (let y = by0; y <= by1; y += 1) {
+                    for (let x = bx0; x <= bx1; x += 1) {
+                        if (!activeMask[y][x]) {
+                            continue;
+                        }
+                        const key = y * width + x;
+                        if (!targetSet.has(key) && Math.random() < 0.2) {
+                            life[y][x] = false;
+                        }
+                    }
+                }
+
+                patternState.mask = targetSet;
+                patternState.bounds = { x0: bx0, y0: by0, x1: bx1, y1: by1 };
+                patternState.charMap = charMap;
+                patternState.phase = "forming";
+                patternState.ticks = 72;
+                patternState.successFrames = 0;
+                patternState.targetTotal = targetSet.size;
+
+                // Kickstart immediately so formation is visible right away.
+                const warmup = Math.min(16, targetSet.size);
+                let warmed = 0;
+                targetSet.forEach(function (key) {
+                    if (warmed >= warmup) {
+                        return;
+                    }
+                    const y = Math.floor(key / width);
+                    const x = key - y * width;
+                    life[y][x] = true;
+                    cursorFlash[y][x] = Math.max(cursorFlash[y][x], 3);
+                    warmed += 1;
+                });
+            }
+
+            function startNextGreetingRound() {
+                const greeting = autoGreetings[greetingIndex % autoGreetings.length];
+                greetingIndex += 1;
+                seedGreetingAt(Math.floor(width * 0.5), Math.floor(height * 0.5), greeting);
             }
 
             stage.addEventListener("pointermove", function (event) {
@@ -600,6 +821,92 @@
                     }
                 }
 
+                if (patternState.mask && patternState.bounds) {
+                    let targetAlive = 0;
+                    const inForming = patternState.phase === "forming";
+                    const inHold = patternState.phase === "hold";
+                    const inDecay = patternState.phase === "decay";
+                    const totalTargets = Math.max(1, patternState.targetTotal);
+
+                    for (let y = patternState.bounds.y0; y <= patternState.bounds.y1; y += 1) {
+                        for (let x = patternState.bounds.x0; x <= patternState.bounds.x1; x += 1) {
+                            if (!activeMask[y][x]) {
+                                continue;
+                            }
+                            const key = y * width + x;
+                            const inTarget = patternState.mask.has(key);
+
+                            if (inTarget) {
+                                if (inForming) {
+                                    const progress = 1 - patternState.ticks / 72;
+                                    const trapChance = 0.14 + progress * 0.56;
+                                    if (Math.random() < trapChance) {
+                                        nextLife[y][x] = true;
+                                    }
+                                } else if (inHold) {
+                                    if (Math.random() < 0.92) {
+                                        nextLife[y][x] = true;
+                                    }
+                                } else if (inDecay) {
+                                    const retainChance = Math.max(0, patternState.ticks / 54);
+                                    if (Math.random() < retainChance) {
+                                        nextLife[y][x] = true;
+                                    } else if (Math.random() < 0.55) {
+                                        nextLife[y][x] = false;
+                                    }
+                                }
+
+                                if (nextLife[y][x]) {
+                                    targetAlive += 1;
+                                    cursorFlash[y][x] = Math.max(cursorFlash[y][x], inForming ? 3 : 1);
+                                }
+                            } else {
+                                if (inForming && Math.random() < 0.07) {
+                                    nextLife[y][x] = false;
+                                }
+                                if (inHold && Math.random() < 0.06) {
+                                    nextLife[y][x] = false;
+                                }
+                                if (inDecay && Math.random() < 0.1) {
+                                    nextLife[y][x] = false;
+                                }
+                            }
+                        }
+                    }
+
+                    if (inForming) {
+                        const coverage = targetAlive / totalTargets;
+                        if (coverage >= 0.8) {
+                            patternState.successFrames += 1;
+                        } else {
+                            patternState.successFrames = 0;
+                        }
+
+                        patternState.ticks -= 1;
+                        if (patternState.successFrames >= 2 || patternState.ticks <= 0) {
+                            patternState.phase = "hold";
+                            patternState.ticks = 42;
+                            patternState.successFrames = 0;
+                        }
+                    } else if (inHold) {
+                        patternState.ticks -= 1;
+                        if (patternState.ticks <= 0) {
+                            patternState.phase = "decay";
+                            patternState.ticks = 54;
+                        }
+                    } else if (inDecay) {
+                        patternState.ticks -= 1;
+                        if (patternState.ticks <= 0) {
+                            patternState.mask = null;
+                            patternState.bounds = null;
+                            patternState.charMap = null;
+                            patternState.targetTotal = 0;
+                            patternState.phase = "idle";
+                            patternState.ticks = 36;
+                        }
+                    }
+                }
+
                 for (let y = 0; y < height; y += 1) {
                     for (let x = 0; x < width; x += 1) {
                         life[y][x] = nextLife[y][x];
@@ -636,6 +943,13 @@
                 if (pointer.active) {
                     addAt(pointer.x, pointer.y, pointer.brushRadius);
                 }
+
+                if (!patternState.mask && patternState.phase === "idle") {
+                    patternState.ticks -= 1;
+                    if (patternState.ticks <= 0) {
+                        startNextGreetingRound();
+                    }
+                }
             }
 
             function render() {
@@ -655,6 +969,14 @@
                             grid[y][x] = "+";
                             cursorFlash[y][x] -= 1;
                         }
+                        if (patternState.mask && patternState.mask.has(y * width + x) && life[y][x]) {
+                            const key = y * width + x;
+                            if (patternState.charMap && patternState.charMap.has(key)) {
+                                grid[y][x] = patternState.charMap.get(key);
+                            } else {
+                                grid[y][x] = "#";
+                            }
+                        }
                     }
                 }
 
@@ -663,7 +985,7 @@
 
             let accumulator = 0;
             let lastTime = 0;
-            const stepMs = 45;
+            const stepMs = 55;
 
             function frame(time) {
                 if (!lastTime) {

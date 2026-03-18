@@ -8,6 +8,7 @@
     --nav-offset: 72px;
     --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
     --dur-page-enter: 820ms;
+    --font-main: "IBM Plex Mono", "Noto Sans SC", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 * {
@@ -23,7 +24,7 @@ body {
     min-height: 100vh;
     background: var(--bg);
     color: var(--text);
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: var(--font-main);
     overflow-x: hidden;
 }
 
@@ -188,7 +189,7 @@ h2 {
 }
 
 .resume-stack {
-    transform: translateY(-10px);
+    transform: translateY(-26px);
 }
 
 p {
@@ -219,6 +220,16 @@ p {
     justify-content: center;
 }
 
+.hero-intro {
+    margin: 10px auto 0;
+    min-height: 1.4em;
+    color: rgba(240, 240, 240, 0.92);
+    font-size: clamp(0.78rem, 1.05vw, 0.94rem);
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    font-family: "IBM Plex Mono", "Noto Sans SC", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
 .ascii-stage {
     position: relative;
     display: inline-block;
@@ -239,7 +250,7 @@ p {
 }
 
 .ascii-output {
-    color: #cdcdcd;
+    color: #8d8d8d;
     font-weight: 400;
 }
 
